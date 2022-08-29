@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.io.*;
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
 
 public class CSVObject {
     private int nColumns;
@@ -260,4 +262,9 @@ public class CSVObject {
         return succes;
 	}
     
+    public void copy(String copyText){
+		StringSelection stringSelection = new StringSelection(copyText);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
+	}
 }

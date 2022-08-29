@@ -62,7 +62,8 @@ public class Repes{
 						CSVObject csv = new CSVObject(args[1], types, args[3], args[4]);
 						String sqlSentence = csv.parseSQL(createDB, Integer.parseInt(args[6]));
 
-						System.out.println("\n\n\n" + sqlSentence + "\n\n\n");
+						System.out.prinln("\n\n" + sqlSentence + "\n\n");
+						//csv.copy(sqlSentence);
 					}
 					
 					break;
@@ -154,4 +155,6 @@ public class Repes{
 			}
 		}
 	}
+
+	
 }
