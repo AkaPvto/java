@@ -12,20 +12,20 @@ public class CSVObject {
 
     
     public CSVObject(String route, String[] types, String cSeparator, String tConainer){
+        content = new ArrayList<String[]>();
+
         if(cSeparator != null && cSeparator != "") columnSeparator = cSeparator;
         else columnSeparator = ";";
 
         if(tConainer != null) tuplaContainer = tConainer;
         else tuplaContainer = "\"";
-        
+
         if(types != null && types.length > 0) typeColumns = types;
         
 
-        if(readCSV(route)){}
-        else{
-            nColumns = 0;
-            content = new ArrayList<String[]>();
-        }
+        if(!readCSV(route)) nColumns = 0;
+            
+        
     }
 
     public int getNumColumns(){
@@ -48,7 +48,7 @@ public class CSVObject {
         if(tuplaContainer != null) this.tuplaContainer = tuplaContainer;
     }
 
-    public String csv2sql(boolean createDB, int primaryKeyPos){
+    public String parseSQL(boolean createDB, int primaryKeyPos){
         String sqlInsert = "";
 
         // En caso de especificarlo, se creara una nueva base de datos
@@ -62,7 +62,7 @@ public class CSVObject {
             // Sentencia de la base de datos con las columnas del contenido del csv
             // Si no se han definido tipos todo seran VARCHAR(255)
             
-            sqlInsert += columnHead[i];
+            sqlInsert += columnHead[i]+" ";
             if(typeColumns.length < 1){
                 sqlInsert += "varchar(255)";
             }
@@ -129,9 +129,9 @@ public class CSVObject {
             tupla = "(";
             for(int j=0; j<nColumns; j++){
                 // En caso de que el contenido NO venga contemplado entre ningun caracter especial (como \" o \')
-                if(tuplaContainer == ""){
+                if(tuplaContainer.equals("")){
                     // Para los enteros y booleanos no es necesario meterlo entre ''
-                    if(typeColumns[j] == "I" || typeColumns[j] == "B"){
+                    if(typeColumns[j].equals("I") || typeColumns[j].equals("B")){
                         tupla+=content.get(i)[j];
                     }
                     // Para las cadenas de texto es necesario meterlas entre ''
@@ -142,7 +142,7 @@ public class CSVObject {
                 // En caso de que el contenido venga contemplado entre ningun caracter especial (como \" o \')
                 else{
                     // Para los enteros y booleanos no es necesario meterlo entre ''
-                    if(typeColumns[j] == "I" || typeColumns[j] == "B"){
+                    if(typeColumns[j].equals("I") || typeColumns[j].equals("B")){
                         tupla+=content.get(i)[j].split(tuplaContainer)[1];
                     }
                     // Para las cadenas de texto es necesario meterlas entre ''
@@ -181,9 +181,11 @@ public class CSVObject {
             columnHead = br.readLine().split(columnSeparator);
 
             nColumns = columnHead.length;
+            
             // Mientras hayan lineas que seguir leyendo
             while((line = br.readLine())!=null){
                 content.add(line.split(columnSeparator));
+                
             }
 
             if(content.size()>0) succes = true;

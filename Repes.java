@@ -52,7 +52,19 @@ public class Repes{
 					}
 					break;
 				case "3":
-					System.out.println("El modo 3 todavia no esta implementado");
+					if(args.length == 7){
+						String[] types = args[2].split(";");
+						boolean createDB = false;
+						if(args[5].equals("1")){
+							createDB = true;
+						}
+
+						CSVObject csv = new CSVObject(args[1], types, args[3], args[4]);
+						String sqlSentence = csv.parseSQL(createDB, Integer.parseInt(args[6]));
+
+						System.out.println("\n\n\n" + sqlSentence + "\n\n\n");
+					}
+					
 					break;
 				case "4":
 					System.out.println("El modo 4 todavia no esta implementado");
@@ -64,7 +76,7 @@ public class Repes{
 					System.out.println("Menu del programa:");
 					System.out.println("  - 1: Todavia no implementado");
 					System.out.println("  - 2: Pase por parametro la ruta total o parcial del csv y un string con la parametrizacion (ej: primera columna Integer, segunda columna String, tercera columna Booleano ==> (I,S,B)");
-					System.out.println("  - 3: Todavia no implementado");
+					System.out.println("  - 3: Pase por paremtro la ruta total o parcial del csv, un string con la parametrizacion, el caracter de separacion de columnas, el caracter de contencion de valores, si quieres crear una nueva base de datos y que posicion ocupa la clave primaria");
 					System.out.println("  - 4: Todavia no implementado");
 
 					break;	
@@ -78,7 +90,7 @@ public class Repes{
 			System.out.println("Menu del programa:");
 			System.out.println("  - 1: Todavia no implementado");
 			System.out.println("  - 2: Pase por parametro la ruta total o parcial del csv y un string con la parametrizacion (ej: primera columna Integer, segunda columna String, tercera columna Booleano ==> (I,S,B)");
-			System.out.println("  - 3: Todavia no implementado");
+			System.out.println("  - 3: Pase por paremtro la ruta total o parcial del csv, un string con la parametrizacion, el caracter de separacion de columnas, el caracter de contencion de valores, si quieres crear una nueva base de datos y que posicion ocupa la clave primaria");
 			System.out.println("  - 4: Todavia no implementado");
 		}
 		
