@@ -12,21 +12,14 @@ public class CSVObject {
 
     
     public CSVObject(String route, String[] types, String cSeparator, String tConainer){
-        if(cSeparator != null && cSeparator != ""){
-            columnSeparator = cSeparator;
-        }
-        else{
-            columnSeparator = ";";
-        }
-        if(tConainer != null){
-            tuplaContainer = tConainer;
-        }
-        else{
-            tuplaContainer = "\"";
-        }
-        if(types != null && types.length > 0){
-            typeColumns = types;
-        }
+        if(cSeparator != null && cSeparator != "") columnSeparator = cSeparator;
+        else columnSeparator = ";";
+
+        if(tConainer != null) tuplaContainer = tConainer;
+        else tuplaContainer = "\"";
+        
+        if(types != null && types.length > 0) typeColumns = types;
+        
 
         if(readCSV(route)){}
         else{
