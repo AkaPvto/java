@@ -35,7 +35,25 @@ public class CSVObject {
         }
     }
 
-    
+    public int getNumColumns(){
+        return nColumns;
+    }
+
+    public String getColumnSeparator(){
+        return columnSeparator;
+    }
+
+    public String getTuplaContainer(){
+        return tuplaContainer;
+    }
+
+    public void setColumnsSeparator(String columnSeparator){
+        if(columnSeparator != null && columnSeparator != "") this.columnSeparator = columnSeparator;
+    }
+
+    public void setTuplaContainer(String tuplaContainer){
+        if(tuplaContainer != null) this.tuplaContainer = tuplaContainer;
+    }
 
     public String csv2sql(boolean createDB, int primaryKeyPos){
         String sqlInsert = "";
@@ -155,7 +173,7 @@ public class CSVObject {
     }
 
     // Se le pasa por parametro la ruta de un CSV y rellena el objeto correspondiente con el contenido del csv
-    protected boolean readCSV(String route){
+    private boolean readCSV(String route){
         boolean succes = false;
         File file = null;
         FileReader fr = null;
