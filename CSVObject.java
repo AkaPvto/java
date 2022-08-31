@@ -265,6 +265,15 @@ public class CSVObject {
     public void copy(String copyText){
 		StringSelection stringSelection = new StringSelection(copyText);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(stringSelection, null);
+		clipboard.setContents(stringSelection, stringSelection);
 	}
+
+    public void cmd(String cmdLine){
+        try {
+	        String cmd = "cat archivo_prueba.txt | clip.exe"; //Comando de apagado en linux
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            System.out.println (e);
+        }
+    }
 }

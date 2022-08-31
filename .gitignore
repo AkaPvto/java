@@ -1,3 +1,6 @@
 
 # Ignorar todos los compilados
 *.class
+
+# Irnorar todos los txt
+*.txt
