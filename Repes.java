@@ -107,11 +107,13 @@ public class Repes{
 
 	public static ArrayList<Integer> readCSV(String route){
 		ArrayList<Integer> arrayName = new ArrayList<Integer>();
+		BufferedReader br = null;
+
 		try{
 
 			File file = new File(route);
 			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 
 			String line;
 			while((line=br.readLine())!=null){
@@ -119,17 +121,25 @@ public class Repes{
 			}
 		}catch(Exception e){
 			System.out.println("Exception: " + e.toString());
+		}finally{
+			try{
+				if(br != null) br.close();
+			}catch(Exception e){
+				System.out.println("Exception: " + e.toString());
+			}
 		}
+
 		return arrayName;
 	}
 
 	public static ArrayList<String[]> readFullCSV(String route){
 		ArrayList<String[]> content = new ArrayList<String[]>();
+		BufferedReader br = null;
 		try{
 
 			File file = new File(route);
 			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
+			br = new BufferedReader(fr);
 
 			String line;
 			while((line=br.readLine())!=null){
@@ -137,15 +147,22 @@ public class Repes{
 			}
 		}catch(Exception e){
 			System.out.println("Exception: " + e.toString());
+		}finally{
+			try{
+				if(br != null) br.close();
+			}catch(Exception e){
+				System.out.println("Exception: " + e.toString());
+			}
 		}
 		return content;
 	}
 
 	public static void writeCSV(String route, ArrayList<Integer> content){
 		FileWriter file = null;
+		PrintWriter pw = null;
 		try{
 			file = new FileWriter(route);
-			PrintWriter pw = new PrintWriter(file);
+			pw = new PrintWriter(file);
 
 			pw.println("\"Id_producto\"");
 
@@ -156,8 +173,8 @@ public class Repes{
 			System.out.println("Exception: " + e.toString());
 		}finally{
 			try{
-				if(file != null)
-					file.close();
+				if(file != null) file.close();
+				if(pw != null) pw.close();
 			}catch(Exception e){
 				System.out.println("Exception: " + e.toString());
 			}
