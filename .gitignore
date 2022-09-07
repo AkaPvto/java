@@ -2,5 +2,8 @@
 # Ignorar todos los compilados
 *.class
 
-# Irnorar todos los txt
+# Ignorar todos los txt
 *.txt
+
+#Ignorar todas las carpetas dentro del repo
+*/
