@@ -68,7 +68,15 @@ public class Repes{
 					
 					break;
 				case "4":
-					System.out.println("El modo 4 todavia no esta implementado");
+					if(args.length == 2){
+						Normalizer normalizer = new Normalizer();
+						boolean succes = normalizer.normalizeDir(args[1]);
+						if(succes) System.out.println("Se ha normalizado el directorio correctamente");
+						else System.out.println("No se ha podido normalizar el directorio o no habia nada que normalizar");
+					}
+					else if(args.length > 2) System.out.println("Demasiado argumentos pasados a la funcion.\n2 argumentos necesario.");
+					else System.out.println("Insuficientes argumentos pasados a la funcion.\n2 argumentos necesario.");
+					
 					break;
 				default:
 					System.out.println("\n##############################################################################################");

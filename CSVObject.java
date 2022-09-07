@@ -210,9 +210,10 @@ public class CSVObject {
     public boolean writeCSV(String route, String tContainer, String cSeparator){
         boolean succes = false;
 		FileWriter file = null;
+        PrintWriter pw = null;
 		try{
 			file = new FileWriter(route);
-			PrintWriter pw = new PrintWriter(file);
+			pw = new PrintWriter(file);
 
 
             String fila = "";
@@ -255,6 +256,9 @@ public class CSVObject {
 			try{
 				if(file != null)
 					file.close();
+
+                if(pw != null)
+                    pw.close();
 			}catch(Exception e){
 				System.out.println("Error: " + e.toString());
 			}
