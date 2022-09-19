@@ -61,6 +61,13 @@ public class Repes{
 
 						CSVObject csv = new CSVObject(args[1], types, args[3], args[4]);
 						String sqlSentence = csv.parseSQL(createDB, Integer.parseInt(args[6]));
+						String[] baseRoute = args[1].split("/");
+						baseRoute[baseRoute.length-1] = "";
+						String baseRouteString = "";
+						for (String pieceRoute : baseRoute) {
+							baseRouteString += pieceRoute + "/";
+						}
+						csv.writeSQL(baseRouteString + "csvQuery.sql", sqlSentence);
 
 						System.out.println("\n\n" + sqlSentence + "\n\n");
 						// csv.cmd(sqlSentence);
@@ -84,7 +91,7 @@ public class Repes{
 					System.out.println("##############################################################################################");
 					System.out.println("Menu del programa:");
 					System.out.println("  - 1: Todavia no implementado");
-					System.out.println("  - 2: Pase por parametro la ruta total o parcial del csv y un string con la parametrizacion (ej: primera columna Integer, segunda columna String, tercera columna Booleano ==> (I,S,B)");
+					System.out.println("  - 2: Pase por parametro la ruta total o parcial del csv y un string con la parametrizacion (ej: primera columna Integer, segunda columna String, tercera columna Booleano ==> \"I;S;B\"");
 					System.out.println("  - 3: Pase por paremtro la ruta total o parcial del csv, un string con la parametrizacion, el caracter de separacion de columnas, el caracter de contencion de valores, si quieres crear una nueva base de datos y que posicion ocupa la clave primaria");
 					System.out.println("  - 4: Todavia no implementado");
 
@@ -98,7 +105,7 @@ public class Repes{
 			System.out.println("##############################################################################################");
 			System.out.println("Menu del programa:");
 			System.out.println("  - 1: Todavia no implementado");
-			System.out.println("  - 2: Pase por parametro la ruta total o parcial del csv y un string con la parametrizacion (ej: primera columna Integer, segunda columna String, tercera columna Booleano ==> (I,S,B)");
+			System.out.println("  - 2: Pase por parametro la ruta total o parcial del csv y un string con la parametrizacion (ej: primera columna Integer, segunda columna String, tercera columna Booleano ==> \"I;S;B\"");
 			System.out.println("  - 3: Pase por paremtro la ruta total o parcial del csv, un string con la parametrizacion, el caracter de separacion de columnas, el caracter de contencion de valores, si quieres crear una nueva base de datos y que posicion ocupa la clave primaria");
 			System.out.println("  - 4: Todavia no implementado");
 		}

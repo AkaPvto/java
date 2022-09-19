@@ -55,23 +55,23 @@ public class CSVObject {
 
         // En caso de especificarlo, se creara una nueva base de datos
         if(createDB){
-            sqlInsert = "DROP DATABASE 'Auxiliar';\nCREATE DATABASE 'Auxiliar';\n";
+            sqlInsert = "DROP DATABASE IF EXISTS `Auxiliar`;\nCREATE DATABASE `Auxiliar`;\n";
         }
         
         // ##################### CREAR TABLA #########################
-        sqlInsert +="CREATE TABLE 'auxiliar'(";
+        sqlInsert +="CREATE TABLE `Auxiliar`.`auxiliar`(";
         for(int i=0; i<nColumns;i++){
             // Sentencia de la base de datos con las columnas del contenido del csv
             // Si no se han definido tipos todo seran VARCHAR(255)
             
-            sqlInsert += columnHead[i]+" ";
+            sqlInsert += "`" + columnHead[i]+"` ";
             if(typeColumns.length < 1){
                 sqlInsert += "varchar(255)";
             }
             else{
                 switch (typeColumns[i]){
                     case "I":
-                        sqlInsert += "int";
+                        sqlInsert += "INT";
                         break;
                     
                     case "B":
@@ -99,11 +99,11 @@ public class CSVObject {
             // Se coloca la clave primaria indicada en el metodo
             // Si no se ha indicado correctamente, el primer parametro sera la clave primaria
             if(primaryKeyPos >= 0 && primaryKeyPos < nColumns){
-                if(i == primaryKeyPos) sqlInsert += " PRIMARY KEY";
+               if(i == primaryKeyPos) sqlInsert += " NOT NULL PRIMARY KEY";
             }
             else{
-                if(i == 0) sqlInsert += " PRIMARY KEY";
-            }
+                if(i == 0) sqlInsert += " NOT NULL PRIMARY KEY";
+            } 
 
             // Separadores
             if(i != nColumns - 1) sqlInsert += ", ";
@@ -115,9 +115,9 @@ public class CSVObject {
         // ##################### INSERTAR VALORES #########################
 
         // Inicio de la sentencia indicando la tabla y columnas en la que vamos a insertar
-        sqlInsert += "INSERT INTO 'auxiliar'(";
+        sqlInsert += "INSERT IGNORE INTO `Auxiliar`.`auxiliar`(";
         for(int i = 0; i<nColumns; i++){
-            sqlInsert += columnHead[i];
+            sqlInsert += "`" + columnHead[i] + "`";
             if(i!= nColumns - 1) sqlInsert += ", ";
         }
         sqlInsert += ") ";
@@ -130,26 +130,29 @@ public class CSVObject {
         for(int i=0; i<content.size(); i++){
             tupla = "(";
             for(int j=0; j<nColumns; j++){
+                String localContent = "";
+                if(content.get(i).length > j) localContent = content.get(i)[j];
+
                 // En caso de que el contenido NO venga contemplado entre ningun caracter especial (como \" o \')
                 if(tuplaContainer.equals("")){
                     // Para los enteros y booleanos no es necesario meterlo entre ''
                     if(typeColumns[j].equals("I") || typeColumns[j].equals("B")){
-                        tupla+=content.get(i)[j];
+                        tupla+=localContent;
                     }
                     // Para las cadenas de texto es necesario meterlas entre ''
                     else{
-                        tupla+="'"+content.get(i)[j]+"'";
+                        tupla+="'"+localContent+"'";
                     }
                 }
                 // En caso de que el contenido venga contemplado entre ningun caracter especial (como \" o \')
                 else{
                     // Para los enteros y booleanos no es necesario meterlo entre ''
                     if(typeColumns[j].equals("I") || typeColumns[j].equals("B")){
-                        tupla+=content.get(i)[j].split(tuplaContainer)[1];
+                        tupla+=localContent.split(tuplaContainer)[1];
                     }
                     // Para las cadenas de texto es necesario meterlas entre ''
                     else{
-                        tupla+="'"+content.get(i)[j].split(tuplaContainer)[1]+"'";
+                        tupla+="'"+localContent.split(tuplaContainer)[1]+"'";
                     }
                 }
                 // Separadores
@@ -162,13 +165,15 @@ public class CSVObject {
             // Incluimos la tupla (column1, column2, ...) en la sentencia general
             sqlInsert += tupla;
         }
+        sqlInsert += ";";
         // ##################### INSERTAR VALORES #########################
+
 
         return sqlInsert;
     }
 
     // Se le pasa por parametro la ruta de un CSV y rellena el objeto correspondiente con el contenido del csv
-    private boolean readCSV(String route){
+    private boolean readCSV(String route) {
         boolean succes = false;
         File file = null;
         FileReader fr = null;
@@ -183,6 +188,7 @@ public class CSVObject {
             columnHead = br.readLine().split(columnSeparator);
 
             nColumns = columnHead.length;
+            System.out.println("Numero de columns: "  + nColumns);
             
             // Mientras hayan lineas que seguir leyendo
             while((line = br.readLine())!=null){
@@ -205,6 +211,38 @@ public class CSVObject {
 
         return succes;
     }
+
+    public boolean writeSQL(String route, String tContent){
+        boolean succes = false;
+		FileWriter file = null;
+        PrintWriter pw = null;
+		try{
+			file = new FileWriter(route);
+			pw = new PrintWriter(file);
+
+
+
+            // Se incluyen en el archivo la fila preparada
+            pw.println(tContent);
+
+
+            succes = true;
+		}catch(Exception e){
+			System.out.println("Error: " + e.toString());
+		}finally{
+			try{
+				if(file != null)
+					file.close();
+
+                if(pw != null)
+                    pw.close();
+			}catch(Exception e){
+				System.out.println("Error: " + e.toString());
+			}
+		}
+        return succes;
+    }
+
 
     // Utiliza el contenido del objeto y los parametros que se pasan para escribir un csv en la ruta definida
     public boolean writeCSV(String route, String tContainer, String cSeparator){
